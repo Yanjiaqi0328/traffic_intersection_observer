@@ -81,21 +81,21 @@ def animate(frame_idx): # update animation by dt
   
     """ online frame update """
     # car request
-    if with_probability(options.new_car_probability):
-        new_start_node, new_end_node, new_car = spawn_car()
-        planner._request_queue.enqueue((new_start_node, new_end_node, new_car)) # planner takes request
-    service_count = 0
-    original_request_len = planner._request_queue.len()
-    while planner._request_queue.len() > 0 and not deadlocked: # if there is at least one live request in the queue
-        planner.serve(graph=car_graph.G,traffic_lights=traffic_lights)
-        service_count += 1
-        if service_count == original_request_len:
-            service_count = 0 # reset service count
-            if planner._request_queue.len() == original_request_len:
-                deadlocked = True
-            else:
-                original_request_len = planner._request_queue.len()
-    planner.clear_stamps()
+#    if with_probability(options.new_car_probability):
+#        new_start_node, new_end_node, new_car = spawn_car()
+#        planner._request_queue.enqueue((new_start_node, new_end_node, new_car)) # planner takes request
+#    service_count = 0
+#    original_request_len = planner._request_queue.len()
+#    while planner._request_queue.len() > 0 and not deadlocked: # if there is at least one live request in the queue
+#        planner.serve(graph=car_graph.G,traffic_lights=traffic_lights)
+#        service_count += 1
+#        if service_count == original_request_len:
+#            service_count = 0 # reset service count
+#            if planner._request_queue.len() == original_request_len:
+#                deadlocked = True
+#            else:
+#                original_request_len = planner._request_queue.len()
+#    planner.clear_stamps()
 
     # pedestrian entering
     if with_probability(options.new_pedestrian_probability):
@@ -161,7 +161,7 @@ def animate(frame_idx): # update animation by dt
                     global_vars.pedestrians_to_keep.remove(person)
                 
                 if is_between(pedestrian_graph.lane1, person_xy) or is_between(pedestrian_graph.lane2, person_xy) or is_between(pedestrian_graph.lane3, person_xy) or is_between(pedestrian_graph.lane4, person_xy):
-                    person.monitor_state = 2
+                    person.monitor_state = 1
                 if person.id == options.pedestrian_to_pick:
                         monitor_pedestrian_state = person.monitor_state
 

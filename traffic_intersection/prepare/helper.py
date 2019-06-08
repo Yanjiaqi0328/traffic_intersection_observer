@@ -12,7 +12,7 @@ import primitives.tubes as tubes
 import prepare.car_waypoint_graph as car_graph
 import components.car as car
 import components.intersection as intersection
-import observer.monitor as monitor
+import observer.monitor_pedestrian as monitor
 from  prepare.collision_check import collision_free, get_bounding_box
 import components.auxiliary.honk_wavefront as wavefront
 from components.auxiliary.pedestrian_names import names
@@ -475,3 +475,5 @@ def draw_walk_signs_fast(ax, vertical_fig, horizontal_fig):
 def within_confines(x,y):
     x_lim, y_lim = intersection.intersection.size
     return x <= x_lim and x >= 0 and y >= 0 and y <= y_lim
+
+
