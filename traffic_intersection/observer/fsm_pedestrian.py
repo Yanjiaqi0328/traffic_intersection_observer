@@ -11,7 +11,7 @@ from graphviz import Digraph
 f = Digraph('finite_state_machine (pedestrian)',format='png')
 f.attr(rankdir='LR',size='12,15!')
 
-pedestrian_state = 4
+pedestrian_state = 0
 state = 'no_appear'
 f.attr('node', shape='plaintext')
 f.node('')
