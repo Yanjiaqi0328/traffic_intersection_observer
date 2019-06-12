@@ -199,7 +199,7 @@ def fsm_pedestrians(h_cross, v_cross, h_walk, v_walk, h_light, v_light, pedestri
             g.attr(label='v_cross == 1')
             g.attr(fontsize='20')
             g.attr(size = '8,5!')
-    f.render(dir_path +'imglib/pedestrian_and_sign_and_light/state', view=False, cleanup=False)
+    f.render('imglib/pedestrian_and_sign_and_light/state', view=False, cleanup=False)
 #    state = dir_path + '/imglib/pedestrian_and_sign_and_light/('+ str(h_cross) + str(v_cross) + str(h_walk) + str(v_walk) + h_light + v_light +').png'
 #    return Image.open(state)
     
