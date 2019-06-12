@@ -353,39 +353,39 @@ class DynamicCar(KinematicCar): # bicycle 5 DOF model
         return F_x, F_y
 
 # TESTING
-v_x = 1
-v_y = 0
-r = 0
-psi = 0
-w_f = 0.1
-w_r = 0.1
-X = 100
-Y = 100
-init_dyn_state = np.array([v_x, v_y, r, psi, w_f, w_r, X, Y])
-dyn_car = DynamicCar(init_dyn_state = init_dyn_state)
-delta_f = 0
-delta_r = 0
-T_af = 5
-T_ar = 0
-T_bf = 0
-T_br = 0
-inputs = (delta_f, delta_r, T_af, T_ar, T_bf, T_br)
-dt = 0.1
-t_end = 10
-t_start = 0
-t_current = t_start
-X = []
-Y = []
-psi = []
-while t_current < t_end:
-    dyn_car.next(inputs, 0.1)
-    t_current += dt
-    state = dyn_car.dyn_state
-    X.append(state[-2])
-    Y.append(state[-1])
-    print(state)
-
-# state = [v_x, v_y, r, psi, w_f, w_r, X, Y]
-import matplotlib.pyplot as plt
-plt.plot(X,Y)
-plt.show()
+#v_x = 1
+#v_y = 0
+#r = 0
+#psi = 0
+#w_f = 0.1
+#w_r = 0.1
+#X = 100
+#Y = 100
+#init_dyn_state = np.array([v_x, v_y, r, psi, w_f, w_r, X, Y])
+#dyn_car = DynamicCar(init_dyn_state = init_dyn_state)
+#delta_f = 0
+#delta_r = 0
+#T_af = 5
+#T_ar = 0
+#T_bf = 0
+#T_br = 0
+#inputs = (delta_f, delta_r, T_af, T_ar, T_bf, T_br)
+#dt = 0.1
+#t_end = 10
+#t_start = 0
+#t_current = t_start
+#X = []
+#Y = []
+#psi = []
+#while t_current < t_end:
+#    dyn_car.next(inputs, 0.1)
+#    t_current += dt
+#    state = dyn_car.dyn_state
+#    X.append(state[-2])
+#    Y.append(state[-1])
+#    print(state)
+#
+## state = [v_x, v_y, r, psi, w_f, w_r, X, Y]
+#import matplotlib.pyplot as plt
+#plt.plot(X,Y)
+#plt.show()
