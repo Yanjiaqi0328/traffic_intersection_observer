@@ -15,8 +15,10 @@ import numpy as np
 import assumes.params as params
 import variables.global_vars as global_vars
 from prepare.helper import *
-collision_dictionary = np.load('../prepare/collision_dictionary.npy').item()
-edge_to_prim_id = np.load('../prepare/edge_to_prim_id.npy').item()
+collision_dictionary = np.load('../prepare/collision_dictionary.npy',
+        allow_pickle=True).item()
+edge_to_prim_id = np.load('../prepare/edge_to_prim_id.npy',
+        allow_pickle=True).item()
 
 class Scheduler:
     '''Kinematic car class
