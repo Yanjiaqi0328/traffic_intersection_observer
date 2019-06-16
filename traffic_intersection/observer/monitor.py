@@ -32,12 +32,13 @@ if not options.random_simulation:
 
 # creates figure
 fig = plt.figure()
-ax = fig.add_axes([0,0.6,1,0.4]) # get rid of white border
+ax = fig.add_axes([0,0.35,0.36,0.36]) # get rid of white border
 if not options.show_axes:
     fig1 = plt.gca()
     fig1.axes.get_xaxis().set_visible(False)
     fig1.axes.get_yaxis().set_visible(False)
-ax2 = fig.add_axes([0,0,1,0.6]) # get rid of white border
+ax2 = fig.add_axes([0.18,0,1,1]) # get rid of white border
+energy_text = ax.text(0.02, 0.90, '', transform=ax.transAxes)
 fig2 = plt.gca()
 fig2.axes.get_xaxis().set_visible(False)
 fig2.axes.get_yaxis().set_visible(False)
@@ -73,10 +74,7 @@ background = intersection.get_background()
 pedestrian_id = 0
 all_components_monitor = []
 
-
-
 def animate(frame_idx): # update animation by dt
-    #global background, observer, pedestrian_id, all_components_monitor
     global background, observer, pedestrian_id, all_components_monitor
     h_cross = 0
     v_cross = 0
@@ -158,12 +156,13 @@ def animate(frame_idx): # update animation by dt
                             v_cross = 1
                         elif person.state[2] in (pi, 0):
                             h_cross = 1
-                   
-    if monitor_pedestrian_state in (1,2):
+                            
+    if monitor_pedestrian_state == 0:
+        pedestrian_state = -1
+    elif monitor_pedestrian_state in (1,2):
         pedestrian_state = 1
     else:
         pedestrian_state = 0                    
-    print(int(horizontal_walk_safe), int(vertical_walk_safe), horizontal_light[0], vertical_light[0])
     observer = monitor.monitor_pedestrians(h_cross, v_cross, int(horizontal_walk_safe), int(vertical_walk_safe), horizontal_light[0], vertical_light[0], pedestrian_state)
     #observer = monitor.monitor_pedestrians(1, 0, 0, 0, 'y', 'r', 0)
     
@@ -223,6 +222,6 @@ if options.save_video:
     #Writer = animation.writers['ffmpeg']
     writer = animation.FFMpegWriter(fps = options.speed_up_factor*int(1/options.dt), metadata=dict(artist='Traffic Intersection Simulator'), bitrate=-1)
     now = str(datetime.datetime.now())
-    ani.save('../movies/' + now + '.mp4', dpi=200, writer=writer)
+    ani.save('../movies/' + now + '.avi', dpi=500, writer=writer)
 plt.show()
 
