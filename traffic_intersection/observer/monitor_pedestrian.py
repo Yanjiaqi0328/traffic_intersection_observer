@@ -18,7 +18,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 def fsm_pedestrians(h_cross, v_cross, h_walk, v_walk, h_light, v_light, pedestrian_state):
     c = Digraph('G', format = 'png')
-    c.attr(rankdir='TB',dpi = '180')
+    c.attr(rankdir='TB',dpi = '200')
     
     # NOTE: the subgraph name needs to begin with 'cluster' (all lowercase)
     #       so that Graphviz recognizes it as a special cluster subgraph   
@@ -52,7 +52,7 @@ def fsm_pedestrians(h_cross, v_cross, h_walk, v_walk, h_light, v_light, pedestri
         c.edge('10r0g', '10r1g', label='3 <= v_t_l <= 9.4')
         c.edge('10r1g', '10r0g', label='v_t_l > 9.4')
         c.edge('10r0g', '10r0y', label='v_t_l >= 25')
-        c.edge('10r0y', '10g0r', label='h_t_l >= 30', len ='0.1')
+        c.edge('10r0y', '10g0r', label='h_t_l \n>= 30')
         
         
         c.edge('10g0r', '00g0r', label='h_cross == 1 || v_cross == 1')
@@ -73,7 +73,7 @@ def fsm_pedestrians(h_cross, v_cross, h_walk, v_walk, h_light, v_light, pedestri
         c.edge('00r0g', '00r1g', label='3 <= v_t_l <= 9.4')
         c.edge('00r1g', '00r0g', label='v_t_l > 9.4')
         c.edge('00r0g', '00r0y', label='v_t_l>= 25')
-        c.edge('00r0y', '00g0r', label='h_t_l >= 30')
+        c.edge('00r0y', '00g0r', label='h_t_l \n>= 30')
         
         
         c.node(str(pedestrian_state)+str(h_walk)+h_light+str(v_walk)+v_light, style='filled', color='grey')

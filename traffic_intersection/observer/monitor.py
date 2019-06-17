@@ -32,13 +32,12 @@ if not options.random_simulation:
 
 # creates figure
 fig = plt.figure()
-ax = fig.add_axes([0,0.35,0.36,0.36]) # get rid of white border
+ax = fig.add_axes([0,0.2,0.45,0.65]) # get rid of white border
 if not options.show_axes:
     fig1 = plt.gca()
     fig1.axes.get_xaxis().set_visible(False)
     fig1.axes.get_yaxis().set_visible(False)
-ax2 = fig.add_axes([0.18,0,1,1]) # get rid of white border
-energy_text = ax.text(0.02, 0.90, '', transform=ax.transAxes)
+ax2 = fig.add_axes([0.225,0.02,1,0.95]) # get rid of white border
 fig2 = plt.gca()
 fig2.axes.get_xaxis().set_visible(False)
 fig2.axes.get_yaxis().set_visible(False)
@@ -222,6 +221,6 @@ if options.save_video:
     #Writer = animation.writers['ffmpeg']
     writer = animation.FFMpegWriter(fps = options.speed_up_factor*int(1/options.dt), metadata=dict(artist='Traffic Intersection Simulator'), bitrate=-1)
     now = str(datetime.datetime.now())
-    ani.save('../movies/' + now + '.avi', dpi=500, writer=writer)
+    ani.save('../movies/' + now + '.avi', dpi=600, writer=writer)
 plt.show()
 
