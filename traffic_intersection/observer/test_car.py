@@ -27,7 +27,9 @@ def fsm_vehicles(vehicle_state):
     c.edge('0', '0')
     c.edge('1', '1')
     
-    c.node(str(vehicle_state), style='filled', color='grey')
+    if vehicle_state in (0,1):
+        c.node(str(vehicle_state), style='filled', color='grey')
+   
    
     c.render('imglib/car', view=False, cleanup=True)
             

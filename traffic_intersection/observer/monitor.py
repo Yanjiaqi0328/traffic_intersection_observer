@@ -123,6 +123,8 @@ def animate(frame_idx): # update animation by dt
         the_pedestrian.id = pedestrian_id
         if the_pedestrian.id == options.pedestrian_to_pick:
             all_components_monitor = all_components_monitor + [the_pedestrian]
+            if (the_pedestrian.state[0],the_pedestrian.state[1]) == final_node:
+                all_components_monitor = all_components_monitor - [the_pedestrian]
     traffic_lights.update(dt)
     update_traffic_lights(ax, plt, traffic_lights) # for plotting
     vertical_light = traffic_lights.get_states('vertical', 'color')
@@ -179,8 +181,9 @@ def animate(frame_idx): # update animation by dt
     elif monitor_pedestrian_state in (1,2):
         pedestrian_state = 1
     else:
-        pedestrian_state = 0                    
-    monitor.draw_monitor(horizontal_light[0], vertical_light[0], pedestrian_state, 0, observer)
+        pedestrian_state = 0 
+
+                       
     #observer = monitor.monitor_pedestrians(1, 0, 0, 0, 'y', 'r', 0)
     
     ################################ Update and Generate Visuals ################################ 
@@ -192,6 +195,19 @@ def animate(frame_idx): # update animation by dt
     # update cars
     cars_to_keep = []
     update_cars(cars_to_keep, dt)
+    vehicle_state = -1
+    vehicle_id = 0
+    for car in cars_to_keep:
+        vehicle_id += 1
+        print(vehicle_id)
+        car.id = vehicle_id
+        if car.id == options.vehicle_to_pick:
+            all_components_monitor = all_components_monitor + [car]
+            if car.state[0] == 0:
+                vehicle_state = 0
+            else:
+                vehicle_state = 1
+    monitor.draw_monitor(horizontal_light[0], vertical_light[0], pedestrian_state, vehicle_state, observer)
     draw_cars(cars_to_keep, background)
     # show honk wavefronts
     if options.show_honks:
@@ -240,6 +256,6 @@ if options.save_video:
     #Writer = animation.writers['ffmpeg']
     writer = animation.FFMpegWriter(fps = options.speed_up_factor*int(1/options.dt), metadata=dict(artist='Traffic Intersection Simulator'), bitrate=-1)
     now = str(datetime.datetime.now())
-    ani.save('../movies/' + now + '.avi', dpi=600, writer=writer)
+    ani.save('../movies/monitor' + now + '.avi', dpi=600, writer=writer)
 plt.show()
 
