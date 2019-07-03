@@ -32,12 +32,12 @@ if not options.random_simulation:
 
 # creates figure
 fig = plt.figure()
-ax = fig.add_axes([0,0.2,0.45,0.65]) # get rid of white border
+ax = fig.add_axes([0,0.2,0.4,0.65]) # get rid of white border
 if not options.show_axes:
     fig1 = plt.gca()
     fig1.axes.get_xaxis().set_visible(False)
     fig1.axes.get_yaxis().set_visible(False)
-ax2 = fig.add_axes([0.225,0.02,1,0.95]) # get rid of white border
+ax2 = fig.add_axes([0.2,0.26,1,0.53]) # get rid of white border
 fig2 = plt.gca()
 fig2.axes.get_xaxis().set_visible(False)
 fig2.axes.get_yaxis().set_visible(False)
@@ -68,7 +68,7 @@ traffic_lights = traffic_signals.TrafficLights(yellow_max = 10, green_max = 50, 
 planner = scheduler.Scheduler()
 
 background = intersection.get_background()
-#observer = monitor.get_background()
+observer = monitor.get_background()
 
 pedestrian_id = 0
 all_components_monitor = []
@@ -84,6 +84,24 @@ def animate(frame_idx): # update animation by dt
     global_vars.current_time = frame_idx * dt # update current time from frame index and dt
     green_duration = traffic_lights._max_time['green']
     walk_sign_duration = traffic_lights._walk_sign_duration
+    
+    """ online frame update """
+    # car request
+    if with_probability(options.new_car_probability):
+        new_start_node, new_end_node, new_car = spawn_car()
+        planner._request_queue.enqueue((new_start_node, new_end_node, new_car)) # planner takes request
+    service_count = 0
+    original_request_len = planner._request_queue.len()
+    while planner._request_queue.len() > 0 and not deadlocked: # if there is at least one live request in the queue
+        planner.serve(graph=car_graph.G,traffic_lights=traffic_lights)
+        service_count += 1
+        if service_count == original_request_len:
+            service_count = 0 # reset service count
+            if planner._request_queue.len() == original_request_len:
+                deadlocked = True
+            else:
+                original_request_len = planner._request_queue.len()
+    planner.clear_stamps()
     
     if with_probability(options.new_pedestrian_probability):
         while True:
@@ -162,7 +180,7 @@ def animate(frame_idx): # update animation by dt
         pedestrian_state = 1
     else:
         pedestrian_state = 0                    
-    observer = monitor.monitor_pedestrians(h_cross, v_cross, int(horizontal_walk_safe), int(vertical_walk_safe), horizontal_light[0], vertical_light[0], pedestrian_state)
+    monitor.draw_monitor(horizontal_light[0], vertical_light[0], pedestrian_state, 0, observer)
     #observer = monitor.monitor_pedestrians(1, 0, 0, 0, 'y', 'r', 0)
     
     ################################ Update and Generate Visuals ################################ 
@@ -205,6 +223,7 @@ def animate(frame_idx): # update animation by dt
     background = intersection.get_background()
     the_observer = [ax2.imshow(observer)] # update the stage
     observer.close()
+    observer = monitor.get_background()
     
     t1 = time.time()
     elapsed_time = (t1 - t0)
