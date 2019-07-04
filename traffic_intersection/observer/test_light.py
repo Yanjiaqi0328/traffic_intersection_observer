@@ -15,25 +15,29 @@ import matplotlib.pyplot as plt
 import time
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-
-def fsm_light(h_light, v_light):
+def fsm_light(last_h_light, last_v_light, current_h_light, current_v_light):
+    fillcolor = '#006400'
+    edgecolor = {'gryr':'black', 'yrrr': 'black', 'rrrg':'black', 'rgry':'black', 'rygr':'black'}
     c = Digraph('G', format = 'png')
     c.attr(rankdir='TB',dpi = '300',layout = 'circo',size='1.5,1.5!')
-    #c.graph_attr.update(rank='min')
-    c.attr('node', shape='circle', width='0.1', fontsize ='15.0')
-    c.attr('edge', arrowsize = '0.5', fontsize ='12.0')
-    c.edge('gr', 'yr', label='t_light >= 25') 
-    c.edge('yr', 'rr', label='t_light >= 5')
-    c.edge('rr', 'rg', label='t_light >= 0.1') 
-    c.edge('rg', 'ry', label='t_light >= 25',fontcolor = '#006400',color='#006400')
-    c.edge('ry', 'gr', label='t_light >= 5') 
     
-    c.node(h_light+v_light, style='filled', color='grey')
+    c.attr('node', shape='circle', width='0.1', fontsize ='15.0')
+    c.node(current_h_light + current_v_light, style='filled', color='grey')
+    if [last_h_light, last_v_light] != [-1,-1]:
+        edgecolor[last_h_light+last_v_light+current_h_light+current_v_light] = fillcolor
+    
+    c.attr('edge', arrowsize = '0.5', fontsize ='12.0')
+    c.edge('gr', 'yr', label='t_light >= 25', fontcolor = edgecolor['gryr'], color = edgecolor['gryr']) 
+    c.edge('yr', 'rr', label='t_light >= 5', fontcolor = edgecolor['yrrr'], color = edgecolor['yrrr'])
+    c.edge('rr', 'rg', label='t_light >= 0.1', fontcolor = edgecolor['rrrg'], color = edgecolor['rrrg']) 
+    c.edge('rg', 'ry', label='t_light >= 25', fontcolor = edgecolor['rgry'], color = edgecolor['rgry'])
+    c.edge('ry', 'gr', label='t_light >= 5', fontcolor = edgecolor['rygr'], color = edgecolor['rygr']) 
+    
     c.render('imglib/light', view=False, cleanup=True)
             
     
-def monitor_light(h_light, v_light):
-    fsm_light( h_light, v_light)
+def monitor_light(last_h_light, last_v_light, current_h_light, current_v_light):
+    fsm_light( last_h_light, last_v_light, current_h_light, current_v_light)
     state = dir_path + '/imglib/light.png'
     return Image.open(state)
 

@@ -35,6 +35,7 @@ class Pedestrian:
         self.alive_time = 0
         self.is_dead = False
         self.id = 0
+        self.destination = (-1,-1)
         self.state = np.array(init_state, dtype="float")
         self.monitor_state = 0
         self.number_of_gaits = film_dim[0] * film_dim[1]
@@ -145,7 +146,6 @@ class Pedestrian:
             walking = True
             self.monitor_state = 1
         return walking
-    
     
     # if the pedestrian isn't going fast enough, increase speed to cross street before light turns red
     def walk_faster(self, remaining_time):

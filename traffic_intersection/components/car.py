@@ -72,6 +72,7 @@ class KinematicCar():
         self._length = length
         self._vee_max = vee_max
         self.id = 0
+        self.destination = (-1,-1)
         self.acc_range = (acc_min, acc_max)
         self.steer_range = (steer_min, steer_max)
         self.alive_time = 0

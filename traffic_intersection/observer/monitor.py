@@ -70,13 +70,17 @@ planner = scheduler.Scheduler()
 background = intersection.get_background()
 observer = monitor.get_background()
 
+vehicle_id = 0
 pedestrian_id = 0
-all_components_monitor = []
+last_state = [-1,-1,-1,-1]
 
 def animate(frame_idx): # update animation by dt
-    global background, observer, pedestrian_id, all_components_monitor
+    global background, observer, vehicle_id, pedestrian_id, last_state
     h_cross = 0
     v_cross = 0
+    pedestrian_spec = 0
+    light_spec = 0
+    vehicle_spec = 0
     ax.clear()
     ax2.clear()
     t0 = time.time()
@@ -84,11 +88,12 @@ def animate(frame_idx): # update animation by dt
     global_vars.current_time = frame_idx * dt # update current time from frame index and dt
     green_duration = traffic_lights._max_time['green']
     walk_sign_duration = traffic_lights._walk_sign_duration
-    
+    all_components_monitor = []
     """ online frame update """
     # car request
     if with_probability(options.new_car_probability):
         new_start_node, new_end_node, new_car = spawn_car()
+        new_car.destination = (new_end_node[2], new_end_node[3])
         planner._request_queue.enqueue((new_start_node, new_end_node, new_car)) # planner takes request
     service_count = 0
     original_request_len = planner._request_queue.len()
@@ -120,11 +125,11 @@ def animate(frame_idx): # update animation by dt
                 the_pedestrian.prim_queue.enqueue(((shortest_path[0], shortest_path[1], vee), 0))
                 del shortest_path[0]
         global_vars.pedestrians_to_keep.add(the_pedestrian)
+        the_pedestrian.destination = final_node
         the_pedestrian.id = pedestrian_id
-        if the_pedestrian.id == options.pedestrian_to_pick:
-            all_components_monitor = all_components_monitor + [the_pedestrian]
-            if (the_pedestrian.state[0],the_pedestrian.state[1]) == final_node:
-                all_components_monitor = all_components_monitor - [the_pedestrian]
+#        if the_pedestrian.id == options.pedestrian_to_pick:
+#            all_components_monitor = all_components_monitor + [the_pedestrian]
+            
     traffic_lights.update(dt)
     update_traffic_lights(ax, plt, traffic_lights) # for plotting
     vertical_light = traffic_lights.get_states('vertical', 'color')
@@ -169,12 +174,22 @@ def animate(frame_idx): # update animation by dt
                     person.monitor_state = 2
                     
                 if person.id == options.pedestrian_to_pick:
+                    all_components_monitor = all_components_monitor + [person]
                     monitor_pedestrian_state = person.monitor_state
                     if monitor_pedestrian_state in (2,3,4):
                         if person.state[2] in (-pi/2, pi/2):
                             v_cross = 1
                         elif person.state[2] in (pi, 0):
                             h_cross = 1
+                        if monitor_pedestrian_state == 4:
+                            pedestrian_spec = 2
+                        if monitor_pedestrian_state == 3:
+                            pedestrian_spec = 3
+                    if (person.state[0],person.state[1]) == person.destination:
+                        print('arrived')
+                        pedestrian_spec = 1
+                        all_components_monitor = []
+                        
                             
     if monitor_pedestrian_state == 0:
         pedestrian_state = -1
@@ -196,18 +211,28 @@ def animate(frame_idx): # update animation by dt
     cars_to_keep = []
     update_cars(cars_to_keep, dt)
     vehicle_state = -1
-    vehicle_id = 0
+
     for car in cars_to_keep:
-        vehicle_id += 1
-        print(vehicle_id)
-        car.id = vehicle_id
+        if car.id == 0:
+            vehicle_id += 1
+            #print(vehicle_id)
+            car.id = vehicle_id
         if car.id == options.vehicle_to_pick:
+            print(car.destination)
             all_components_monitor = all_components_monitor + [car]
-            if car.state[0] == 0:
+            if car.state[0] < 1:
                 vehicle_state = 0
+                vehicle_spec = 2
             else:
                 vehicle_state = 1
-    monitor.draw_monitor(horizontal_light[0], vertical_light[0], pedestrian_state, vehicle_state, observer)
+#            if (car.state[2],car.state[3]) == car.destination:
+#                print('finish')
+#                all_components_monitor = []
+#                print(all_components_monitor)
+    
+    current_state = [horizontal_light[0], vertical_light[0], pedestrian_state, vehicle_state] 
+    monitor.draw_monitor(last_state, current_state, pedestrian_spec, observer)
+    last_state = current_state
     draw_cars(cars_to_keep, background)
     # show honk wavefronts
     if options.show_honks:
@@ -245,7 +270,7 @@ def animate(frame_idx): # update animation by dt
     elapsed_time = (t1 - t0)
     all_artists = the_intersection + global_vars.cars_to_show + global_vars.crossing_highlights + global_vars.honk_waves + global_vars.boxes + global_vars.curr_tubes + global_vars.ids + global_vars.prim_ids_to_show + global_vars.walls + global_vars.show_traffic_lights + global_vars.walk_signs 
     print('{:.2f}'.format(global_vars.current_time)+'/'+str(options.duration) + ' at ' + str(int(1/elapsed_time)) + ' fps') # print out current time to 2 decimal places
-    return all_artists + global_vars.boxes_monitor + the_observer
+    return all_artists + the_observer
 
 t0 = time.time()
 animate(0)
