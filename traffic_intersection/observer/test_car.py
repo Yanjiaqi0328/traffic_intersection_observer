@@ -17,14 +17,16 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
 def fsm_vehicles(last_vehicle_state, current_vehicle_state):
-    fillcolor = '#006400'
+    fillcolor = '#00A000'
     edgecolor = {'00':'black', '01': 'black', '10':'black', '11':'black'}
     c = Digraph('G', format = 'png')
-    c.attr(rankdir='LR',dpi = '300',size='2.2,0.6!')
+    c.attr(rankdir='LR',dpi = '300',size='2.0,0.5!')
     
     c.attr('node', shape='circle', width='0.08', fontsize ='10.0')
+    c.node('0')
+    c.node('1')
     if current_vehicle_state in (0,1):
-        c.node(str(current_vehicle_state), style='filled', color='grey')
+        c.node(str(current_vehicle_state), style='filled', color=fillcolor)
         if last_vehicle_state in (0,1):
             edgecolor[str(last_vehicle_state)+str(current_vehicle_state)] = fillcolor 
     c.attr('edge', arrowsize = '0.5', fontsize ='10.0')

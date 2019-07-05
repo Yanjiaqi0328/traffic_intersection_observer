@@ -388,7 +388,7 @@ def check_for_collisions(cars_to_keep):
     for person in global_vars.pedestrians_to_keep:
         for car in cars_to_keep:
             no_collision,_ = collision_free(person, car)
-            if not no_collision and car.state[0] > 1:
+            if not no_collision and car.state[0] > 10:
                 person.is_dead = True
 
 def update_cars(cars_to_keep, dt):

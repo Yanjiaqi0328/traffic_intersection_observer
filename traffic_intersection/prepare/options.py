@@ -1,13 +1,13 @@
 custom = True
 if custom:
-    save_video = False
+    save_video = True
     random_simulation = True
     random_seed = 1
     np_random_seed = 1
     antialias_enabled = True
     speed_up_factor = 1
     dt = 0.1
-    duration = 100
+    duration = 400
     highlight_crossings = True
     create_collision_dictionary = False
     show_boxes = False
@@ -19,7 +19,8 @@ if custom:
     new_car_probability = 0.7
     new_pedestrian_probability = 0.2
     show_axes = False
-    pedestrian_to_pick = 3
+    pedestrian_to_pick = 1
+    vehicle_to_pick = 1
     show_boxes_monitor = True
 else:
     random_simulation = True

@@ -16,14 +16,16 @@ import time
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 def fsm_pedestrians(last_pedestrian_state, current_pedestrian_state):
-    fillcolor = '#006400'
+    fillcolor = '#008000'
     edgecolor = {'00':'black', '01': 'black', '10':'black', '11':'black'}
     c = Digraph('G', format = 'png')
     c.attr(rankdir='LR',dpi = '200',size='2.2,0.6!')
     
     c.attr('node', shape='circle', width='0.1', fontsize ='15.0')
+    c.node('0')
+    c.node('1')
     if current_pedestrian_state in (0,1):
-        c.node(str(current_pedestrian_state), style='filled', color='grey')
+        c.node(str(current_pedestrian_state), style='filled', color=fillcolor)
         if last_pedestrian_state in (0,1):
             edgecolor[str(last_pedestrian_state)+str(current_pedestrian_state)] = fillcolor
     c.attr('edge', arrowsize = '0.5', fontsize ='16.0')
