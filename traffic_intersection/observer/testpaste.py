@@ -14,7 +14,7 @@ import scipy.integrate as integrate
 from primitives.load_primitives import get_prim_data
 import test_pedestrian, test_light, test_car
 dir_path = os.path.dirname(os.path.realpath(__file__))
-background_fig = dir_path + '/imglib/as/Slide.png'
+background_fig = dir_path + '/imglib/as/monitor.png'
 
 def get_background():
     return Image.open(background_fig)
@@ -41,7 +41,7 @@ def draw_monitor(last_state, current_state, prim_id, person_spec, car_spec, back
     fontpath = 'AbhayaLibre-SemiBold.ttf'
     font = ImageFont.truetype(fontpath, 28)
     smallfont = ImageFont.truetype(fontpath, 18)
-    middlefont = ImageFont.truetype(fontpath, 22)
+    middlefont = ImageFont.truetype(fontpath, 23)
     font1 = ImageFont.truetype(fontpath1, 25)
     largefont = ImageFont.truetype(fontpath1, 40)
     nofill = (0,0,0)
@@ -90,10 +90,10 @@ def draw_monitor(last_state, current_state, prim_id, person_spec, car_spec, back
     draw.text((1050,345), '\u25CA\u00AC collision.',fill=color_car_spec[1],font=font)
     
     if prim_id != -1:
-        draw.text((1280,670), 'Guiding prim id = ' +str(prim_id),fill=(0,100,0),font=middlefont)
-        draw.text((1280,700), str(x0) + '->'+ str(xf),fill=(0,100,0),font=middlefont)
+        draw.text((1275,670), 'Guiding prim_id = ' +str(prim_id),fill=(0,100,0),font=middlefont)
+        draw.text((1275,700), str(x0) + '->'+ str(xf),fill=(0,100,0),font=middlefont)
     
    
-#background = get_background()
-#draw_monitor(['r', 'r', 1, 1],['r', 'g', 1, 0],99, 2, 2, background)
-#background.show()
+background = get_background()
+draw_monitor(['r', 'r', 1, 1],['r', 'g', 1, 0],99, 2, 2, background)
+background.show()

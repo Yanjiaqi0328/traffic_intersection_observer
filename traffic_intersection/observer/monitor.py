@@ -234,9 +234,6 @@ def animate(frame_idx): # update animation by dt
                 else:
                     prim_id,_ = car.extract_primitive()
                     print(prim_id)                 
-#            if distance((car.state[2],car.state[3]),car.destination) <= 10:
-#                print('finish')
-#                vehicle_spec = 1
 
     if find_car == False and vehicle_id >= options.vehicle_to_pick:
         options.vehicle_to_pick = vehicle_id + 10
