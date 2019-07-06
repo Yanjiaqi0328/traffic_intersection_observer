@@ -78,9 +78,13 @@ def animate(frame_idx): # update animation by dt
     global background, observer, vehicle_id, pedestrian_id, last_state
     h_cross = 0
     v_cross = 0
+    
+    # for monitor visualization
     pedestrian_spec = 0
     light_spec = 0
     vehicle_spec = 0
+    prim_id = -1
+    
     ax.clear()
     ax2.clear()
     t0 = time.time()
@@ -189,7 +193,6 @@ def animate(frame_idx): # update animation by dt
                         options.pedestrian_to_pick = pedestrian_id + 20
                         print('arrived')
                         pedestrian_spec = 1
-                        all_components_monitor = []
                         
                             
     if monitor_pedestrian_state == 0:
@@ -198,9 +201,6 @@ def animate(frame_idx): # update animation by dt
         pedestrian_state = 1
     else:
         pedestrian_state = 0 
-
-                       
-    #observer = monitor.monitor_pedestrians(1, 0, 0, 0, 'y', 'r', 0)
     
     ################################ Update and Generate Visuals ################################ 
     # highlight crossings
@@ -212,29 +212,37 @@ def animate(frame_idx): # update animation by dt
     cars_to_keep = []
     update_cars(cars_to_keep, dt)
     vehicle_state = -1
-
-    for car in cars_to_keep:
+    
+    find_car = False
+    for car in cars_to_keep:    
         if car.id == 0: #new car
             vehicle_id += 1
             car.id = vehicle_id
-            print(distance((car.state[2],car.state[3]),car.destination)) 
         if car.id == options.vehicle_to_pick:
-            #print(car.destination)
-            print(car.state[2],car.state[3])
+            find_car = True
+            print(distance((car.state[2],car.state[3]),car.destination)) 
             all_components_monitor = all_components_monitor + [car]
             if car.state[0] < 1:
                 vehicle_state = 0
                 vehicle_spec = 2
             else:
                 vehicle_state = 1
-            if distance((car.state[2],car.state[3]),car.destination) <= 10:
-                options.vehicle_to_pick = vehicle_id + 10
-                print('finish')
-                vehicle_spec = 1
-                all_components_monitor = []
+                if car.extract_primitive()== False:
+                    print('finish')
+                    vehicle_spec = 1
+                    all_components_monitor = []
+                else:
+                    prim_id,_ = car.extract_primitive()
+                    print(prim_id)                 
+#            if distance((car.state[2],car.state[3]),car.destination) <= 10:
+#                print('finish')
+#                vehicle_spec = 1
+
+    if find_car == False and vehicle_id >= options.vehicle_to_pick:
+        options.vehicle_to_pick = vehicle_id + 10
     
     current_state = [horizontal_light[0], vertical_light[0], pedestrian_state, vehicle_state] 
-    monitor.draw_monitor(last_state, current_state, pedestrian_spec, vehicle_spec, observer)
+    monitor.draw_monitor(last_state, current_state, prim_id, pedestrian_spec, vehicle_spec, observer)
     last_state = current_state
     draw_cars(cars_to_keep, background)
     # show honk wavefronts
