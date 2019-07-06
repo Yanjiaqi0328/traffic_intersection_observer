@@ -84,6 +84,7 @@ def animate(frame_idx): # update animation by dt
     light_spec = 0
     vehicle_spec = 0
     prim_id = -1
+    exception = {'pedestrian': False, 'vehicle': False}
     
     ax.clear()
     ax2.clear()
@@ -180,6 +181,7 @@ def animate(frame_idx): # update animation by dt
                 if person.id == options.pedestrian_to_pick:
                     all_components_monitor = all_components_monitor + [person]
                     monitor_pedestrian_state = person.monitor_state
+                    exception['pedestrian'] = person.is_dead
                     if monitor_pedestrian_state in (2,3,4):
                         if person.state[2] in (-pi/2, pi/2):
                             v_cross = 1
@@ -220,7 +222,6 @@ def animate(frame_idx): # update animation by dt
             car.id = vehicle_id
         if car.id == options.vehicle_to_pick:
             find_car = True
-            print(distance((car.state[2],car.state[3]),car.destination)) 
             all_components_monitor = all_components_monitor + [car]
             if car.state[0] < 1:
                 vehicle_state = 0
@@ -233,13 +234,16 @@ def animate(frame_idx): # update animation by dt
                     all_components_monitor = []
                 else:
                     prim_id,_ = car.extract_primitive()
-                    print(prim_id)                 
+                for person in global_vars.pedestrians_to_keep:
+                    no_collision,_ = collision_free(person, car)
+                    if not no_collision:
+                        exception['vehicle'] = True
 
     if find_car == False and vehicle_id >= options.vehicle_to_pick:
         options.vehicle_to_pick = vehicle_id + 10
     
     current_state = [horizontal_light[0], vertical_light[0], pedestrian_state, vehicle_state] 
-    monitor.draw_monitor(last_state, current_state, prim_id, pedestrian_spec, vehicle_spec, observer)
+    monitor.draw_monitor(last_state, current_state, exception, prim_id, pedestrian_spec, vehicle_spec, observer)
     last_state = current_state
     draw_cars(cars_to_keep, background)
     # show honk wavefronts
