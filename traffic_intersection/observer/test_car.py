@@ -47,5 +47,3 @@ def monitor_vehicles(last_vehicle_state, current_vehicle_state, expection):
     state = dir_path + '/imglib/car.png'
     return Image.open(state)
 
-
-

@@ -12,8 +12,6 @@ import primitives.tubes as tubes
 import prepare.car_waypoint_graph as car_graph
 import components.car as car
 import components.intersection as intersection
-#import observer.monitor_pedestrian as monitor
-import observer.testpaste as monitor
 from  prepare.collision_check import collision_free, get_bounding_box
 import components.auxiliary.honk_wavefront as wavefront
 from components.auxiliary.pedestrian_names import names

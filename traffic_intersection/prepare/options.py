@@ -1,6 +1,6 @@
 custom = True
 if custom:
-    save_video = True
+    save_video = False
     random_simulation = True
     random_seed = 1
     np_random_seed = 1

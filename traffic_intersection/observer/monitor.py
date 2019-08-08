@@ -11,6 +11,7 @@ sys.path.append('..') # enable importing modules from an upper directory:
 from prepare.helper import *
 import time, platform, warnings, matplotlib, random
 import components.scheduler as scheduler
+import observer.testpaste as monitor
 import datetime
 if platform.system() == 'Darwin': # if the operating system is MacOS
 #    matplotlib.use('macosx')
