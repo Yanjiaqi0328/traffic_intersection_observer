@@ -48,7 +48,7 @@ def fsm_pedestrians(h_cross, v_cross, h_walk, v_walk, h_light, v_light, pedestri
         c.edge('11g0r', '10g0r', label='h_t_l > 9.4')
         c.edge('10g0r', '10y0r', label='h_t_l >= 25')
         c.edge('10y0r', '10r0r', label='h_t_l >= 5')
-        c.edge('10r0r', '10r0g', label='h_t_l >= 0.1')
+        c.edge('10r0r', '10r0g', label='h_t_l>= 0.1')
         c.edge('10r0g', '10r1g', label='3 <= v_t_l <= 9.4')
         c.edge('10r1g', '10r0g', label='v_t_l > 9.4')
         c.edge('10r0g', '10r0y', label='v_t_l >= 25')
@@ -60,8 +60,8 @@ def fsm_pedestrians(h_cross, v_cross, h_walk, v_walk, h_light, v_light, pedestri
         c.edge('10r0r', '00r0r', label='h_cross == 1 || v_cross == 1')
         c.edge('10r0g', '00r0g', label='h_cross == 1 || v_cross == 1')
         c.edge('10r0y', '00r0y', label='h_cross == 1 || v_cross == 1')
-        c.edge('11g0r', '01g0r', label='(h_cross == 1 && h_t_walk > h_t_sign) || v_cross == 1')
-        c.edge('10r1g', '00r1g', label='h_cross == 1 || (v_cross == 1 && v_t_walk > v_t_sign)')
+        c.edge('11g0r', '01g0r', label='(h_cross == 1 && t_walk > h_t_sign) || v_cross == 1')
+        c.edge('10r1g', '00r1g', label='h_cross == 1 || (v_cross == 1 && t_walk > v_t_sign)')
         c.edge('00g0r', '11g0r', label='h_cross == 1 && 3 <= h_t_l <= 9.4')
         c.edge('00r0g', '10r1g', label='v_cross == 1 && 3 <= v_t_l <= 9.4')
         
@@ -72,12 +72,12 @@ def fsm_pedestrians(h_cross, v_cross, h_walk, v_walk, h_light, v_light, pedestri
         c.edge('00r0r', '00r0g', label='h_t_l >= 0.1')
         c.edge('00r0g', '00r1g', label='3 <= v_t_l <= 9.4')
         c.edge('00r1g', '00r0g', label='v_t_l > 9.4')
-        c.edge('00r0g', '00r0y', label='v_t_l>= 25')
+        c.edge('00r0g', '00r0y', label='v_t_l >= 25')
         c.edge('00r0y', '00g0r', label='h_t_l \n>= 30')
         
         
         c.node(str(pedestrian_state)+str(h_walk)+h_light+str(v_walk)+v_light, style='filled', color='grey')
-        c.attr(label='pedestrian \u2297 h_walk \u2297 h_light \u2297 v_walk \u2297 v_light', fontsize ='30.0')
+        c.attr(label='This is a'+ '\033[1;35m test \033[0m!', fontsize ='30.0')
         c.attr(size = '8,5!')
     c.render('imglib/pedestrian_and_sign_and_light/state', view=False, cleanup=True)
             
@@ -88,5 +88,5 @@ def monitor_pedestrians(h_cross, v_cross, h_walk, v_walk, h_light, v_light, pede
     return Image.open(state)
 
 
-#monitor_pedestrians(0, 0, 1, 0, 'g', 'r', 1).show()
+monitor_pedestrians(0, 0, 1, 0, 'g', 'r', 1).show()
 

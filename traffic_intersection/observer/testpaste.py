@@ -95,7 +95,8 @@ def draw_monitor(last_state, current_state, exception, prim_id, person_spec, car
     draw.text((602,344), '\u25A2',fill=color_light_spec[3],font=font1)
     draw.text((617,345), '\u25CA rr.',fill=color_light_spec[3],font=font)
     draw.text((1050,310), '\u25CA arrive = destination;',fill=color_car_spec[0],font=font)
-    draw.text((1050,345), '\u25CA\u00AC collision.',fill=color_car_spec[1],font=font)
+    draw.text((1050,344), '\u25A2',fill=color_car_spec[1],font=font1)
+    draw.text((1065,345), '\u00AC collision.',fill=color_car_spec[1],font=font)
     
     if prim_id != -1 and not exception['vehicle']:
         draw.text((1275,670), 'Guiding prim_id = ' +str(prim_id),fill=(0,100,0),font=middlefont)
@@ -104,5 +105,5 @@ def draw_monitor(last_state, current_state, exception, prim_id, person_spec, car
    
 #background = get_background()
 #exception = {'pedestrian': True, 'vehicle': True}
-#draw_monitor(['r', 'r', 1, 1],['r', 'g', 1, 0], exception, 99, 2, 2, background)
+#draw_monitor(['r', 'r', 1, 1],['r', 'g', 1, 0], exception, 99, -1, 2, background)
 #background.show()
