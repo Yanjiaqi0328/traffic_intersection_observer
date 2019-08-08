@@ -12,6 +12,7 @@ from prepare.helper import *
 import time, platform, warnings, matplotlib, random
 import components.scheduler as scheduler
 import observer.testpaste as monitor
+import observer.schedulerpaste as scheduler_monitor
 import datetime
 if platform.system() == 'Darwin': # if the operating system is MacOS
 #    matplotlib.use('macosx')
@@ -33,7 +34,7 @@ if not options.random_simulation:
 
 # creates figure
 fig = plt.figure()
-ax = fig.add_axes([0,0.2,0.4,0.65]) # get rid of white border
+ax = fig.add_axes([0.005,0.4,0.4,0.65]) # get rid of white border original:[0,0.2,0.4,0.65]
 if not options.show_axes:
     fig1 = plt.gca()
     fig1.axes.get_xaxis().set_visible(False)
@@ -42,7 +43,10 @@ ax2 = fig.add_axes([0.2,0.26,1,0.53]) # get rid of white border
 fig2 = plt.gca()
 fig2.axes.get_xaxis().set_visible(False)
 fig2.axes.get_yaxis().set_visible(False)
- 
+ax3 = fig.add_axes([-0.045,0,0.5,0.5]) # get rid of white border
+fig3 = plt.gca()
+fig3.axes.get_xaxis().set_visible(False)
+fig3.axes.get_yaxis().set_visible(False)
 
 
 # sampling time
@@ -70,13 +74,14 @@ planner = scheduler.Scheduler()
 
 background = intersection.get_background()
 observer = monitor.get_background()
+schedulerobserver = scheduler_monitor.get_background()
 
 vehicle_id = 0
 pedestrian_id = 0
 last_state = [-1,-1,-1,-1]
 
 def animate(frame_idx): # update animation by dt
-    global background, observer, vehicle_id, pedestrian_id, last_state
+    global background, observer, vehicle_id, pedestrian_id, last_state, schedulerobserver
     h_cross = 0
     v_cross = 0
     
@@ -89,6 +94,7 @@ def animate(frame_idx): # update animation by dt
     
     ax.clear()
     ax2.clear()
+    ax3.clear()
     t0 = time.time()
     deadlocked = False
     global_vars.current_time = frame_idx * dt # update current time from frame index and dt
@@ -278,12 +284,16 @@ def animate(frame_idx): # update animation by dt
     the_observer = [ax2.imshow(observer)] # update the stage
     observer.close()
     observer = monitor.get_background()
+    #add scheduler monitor
+    the_scheduler = [ax3.imshow(schedulerobserver)] # update the stage
+    schedulerobserver.close()
+    schedulerobserver = scheduler_monitor.get_background()
     
     t1 = time.time()
     elapsed_time = (t1 - t0)
     all_artists = the_intersection + global_vars.cars_to_show + global_vars.crossing_highlights + global_vars.honk_waves + global_vars.boxes + global_vars.curr_tubes + global_vars.ids + global_vars.prim_ids_to_show + global_vars.walls + global_vars.show_traffic_lights + global_vars.walk_signs 
     print('{:.2f}'.format(global_vars.current_time)+'/'+str(options.duration) + ' at ' + str(int(1/elapsed_time)) + ' fps') # print out current time to 2 decimal places
-    return all_artists + the_observer
+    return all_artists + the_observer + the_scheduler
 
 t0 = time.time()
 animate(0)
