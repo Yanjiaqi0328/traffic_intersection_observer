@@ -200,7 +200,7 @@ def animate(frame_idx): # update animation by dt
                             pedestrian_spec = 3
                     if (person.state[0],person.state[1]) == person.destination:
                         options.pedestrian_to_pick = pedestrian_id + 20
-                        print('arrived')
+                        #print('arrived')
                         pedestrian_spec = 1
                         
                             
@@ -236,7 +236,7 @@ def animate(frame_idx): # update animation by dt
             else:
                 vehicle_state = 1
                 if car.extract_primitive()== False:
-                    print('finish')
+                    #print('finish')
                     vehicle_spec = 1
                     all_components_monitor = []
                 else:
@@ -250,8 +250,11 @@ def animate(frame_idx): # update animation by dt
         options.vehicle_to_pick = vehicle_id + 10
     
     current_state = [horizontal_light[0], vertical_light[0], pedestrian_state, vehicle_state] 
+    # updae monitor
     monitor.draw_monitor(last_state, current_state, exception, prim_id, pedestrian_spec, vehicle_spec, observer)
+    scheduler_monitor.draw_scheduler_table(cars_to_keep, [horizontal_light[0], vertical_light[0]], schedulerobserver)
     last_state = current_state
+    
     draw_cars(cars_to_keep, background)
     # show honk wavefronts
     if options.show_honks:

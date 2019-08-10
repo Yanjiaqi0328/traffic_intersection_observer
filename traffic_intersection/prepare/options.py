@@ -8,7 +8,7 @@ if custom:
     speed_up_factor = 1
     dt = 0.1
     duration = 400
-    highlight_crossings = True
+    highlight_crossings = False
     create_collision_dictionary = False
     show_boxes = False
     show_tubes = False
