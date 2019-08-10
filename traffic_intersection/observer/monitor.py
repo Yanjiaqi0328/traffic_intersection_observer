@@ -43,7 +43,7 @@ ax2 = fig.add_axes([0.2,0.26,1,0.53]) # get rid of white border
 fig2 = plt.gca()
 fig2.axes.get_xaxis().set_visible(False)
 fig2.axes.get_yaxis().set_visible(False)
-ax3 = fig.add_axes([-0.045,0,0.5,0.5]) # get rid of white border
+ax3 = fig.add_axes([-0.045,0.02,0.5,0.5]) # get rid of white border
 fig3 = plt.gca()
 fig3.axes.get_xaxis().set_visible(False)
 fig3.axes.get_yaxis().set_visible(False)
