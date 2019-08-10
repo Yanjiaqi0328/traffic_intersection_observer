@@ -475,4 +475,12 @@ def within_confines(x,y):
     x_lim, y_lim = intersection.intersection.size
     return x <= x_lim and x >= 0 and y >= 0 and y <= y_lim
 
+def show_car_ids(ax, cars_to_keep):
+    global_vars.ids = [ax.text([], [], '') for _ in range(len(cars_to_keep))]
+    for i in range(len(cars_to_keep)):
+        _,_,x,y = cars_to_keep[i].state
+        car_id = cars_to_keep[i].id
+        global_vars.ids[i] = ax.text(x,y,str(car_id), color='w', horizontalalignment='center', verticalalignment='center', bbox=dict(facecolor='red', alpha=0.2), fontsize=5)
+
+
 

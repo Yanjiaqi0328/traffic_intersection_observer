@@ -15,8 +15,9 @@ if custom:
     show_honks = False
     show_plates = False
     show_prims = False
+    show_car_ids = True
     show_traffic_light_walls = False
-    new_car_probability = 0.7
+    new_car_probability = 0.3
     new_pedestrian_probability = 0.2
     show_axes = False
     pedestrian_to_pick = 1

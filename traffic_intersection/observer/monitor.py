@@ -266,6 +266,9 @@ def animate(frame_idx): # update animation by dt
     # show primitive ids
     if options.show_prims:
         show_prim_ids(ax, cars_to_keep)
+    # show car ids
+    if options.show_car_ids:
+        show_car_ids(ax, cars_to_keep)
     # show primitive tubes
     if options.show_tubes:
         plot_tubes(ax, cars_to_keep)
