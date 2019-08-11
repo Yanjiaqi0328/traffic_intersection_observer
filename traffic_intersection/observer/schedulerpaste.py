@@ -31,38 +31,45 @@ def distance(a, b):
 def at_certain_position(object_coordinate, center_of_position):
     return distance(object_coordinate, center_of_position) <= 20
 
+# check whether the object is in the waiting area
+def at_waiting_line(object_coordinate, direction):
+    wait_at_line = False
+    for position in waiting_line[direction]:
+        if at_certain_position(object_coordinate, position):
+                wait_at_line  = True
+                return wait_at_line
+    return wait_at_line
+
 
 def draw_scheduler_table(cars_to_keep, light_color, background): 
     y_coordinate = 175
+    fontpath = 'AbhayaLibre-SemiBold.ttf'
+    font = ImageFont.truetype(fontpath, 40)
+    draw = ImageDraw.Draw(background)  
     for i in range(len(cars_to_keep)):
-        waiting_light = False
+        # only show the first 9 cars in the scheduler table
         if i < 9:
-            fontpath = 'AbhayaLibre-SemiBold.ttf'
-            font = ImageFont.truetype(fontpath, 40)
-            draw = ImageDraw.Draw(background)  
+            car_xy = (cars_to_keep[i].state[2],cars_to_keep[i].state[3])
+            waiting_signal = False
             draw.text((25,y_coordinate), str(cars_to_keep[i].id),fill='black', font=font)
-            if cars_to_keep[i].state[0] < 1:
+            # if the car stops (and not because it is arrived)
+            if cars_to_keep[i].state[0] < 2 and not at_certain_position(car_xy, cars_to_keep[i].destination): 
                 draw.text((220,y_coordinate),'Stop',fill= 'red',font=font)
-                #print(cars_to_keep[i].id, cars_to_keep[i].state[1], cars_to_keep[i].state[2],cars_to_keep[i].state[3])
-                car_xy = (cars_to_keep[i].state[2],cars_to_keep[i].state[3])
-                for position in waiting_line['horizontal']:
-                    if at_certain_position(car_xy, position):
-                        if light_color[0] == 'r':
-                            draw.text((500,y_coordinate),'Red light',fill= 'red',font=font)
-                            waiting_light = True
-                        elif light_color[0] == 'y':
-                            draw.text((500,y_coordinate),'Not enough time',fill= 'red',font=font) 
-                            waiting_light = True
-                if not waiting_light:
-                    for position in waiting_line['vertical']:
-                        if at_certain_position(car_xy, position):
-                            if light_color[1] == 'r':
-                                draw.text((500,y_coordinate),'Red light',fill= 'red',font=font)
-                                waiting_light = True
-                            elif light_color[1] == 'y':
-                                draw.text((500,y_coordinate),'Not enough time',fill= 'red',font=font)  
-                                waiting_light = True
-                if not waiting_light:
+                if at_waiting_line(car_xy, 'horizontal'):
+                    if light_color[0] == 'r':
+                        draw.text((500,y_coordinate),'Red light',fill= 'red',font=font)
+                        waiting_signal = True
+                    elif light_color[0] == 'y':
+                        draw.text((500,y_coordinate),'Not enough time',fill= 'red',font=font) 
+                        waiting_signal = True
+                elif at_waiting_line(car_xy, 'vertical'):
+                    if light_color[1] == 'r':
+                        draw.text((500,y_coordinate),'Red light',fill= 'red',font=font)
+                        waiting_signal = True
+                    elif light_color[1] == 'y':
+                        draw.text((500,y_coordinate),'Not enough time',fill= 'red',font=font) 
+                        waiting_signal = True
+                if not waiting_signal: # if not because of waiting for the signal
                     draw.text((500,y_coordinate),'Not clear',fill= 'red',font=font)
 #                if (abs(theta % (-pi/2)) <= 0.1 or abs(theta % (pi/2)) <= 0.1):
 #                    if light_color[1] == 'r':
@@ -80,8 +87,5 @@ def draw_scheduler_table(cars_to_keep, light_color, background):
                 draw.text((220,y_coordinate),'Driving',fill= (0,100,0),font=font)           
             y_coordinate += 75
       
-#background = get_background()
-#draw_scheduler_table(10, background)
-#background.show()
 
         

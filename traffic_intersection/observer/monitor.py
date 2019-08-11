@@ -105,7 +105,7 @@ def animate(frame_idx): # update animation by dt
     # car request
     if with_probability(options.new_car_probability):
         new_start_node, new_end_node, new_car = spawn_car()
-        new_car.destination = (new_end_node[2], new_end_node[3])
+        new_car.destination = (new_end_node[2], new_end_node[3]) # add destination
         planner._request_queue.enqueue((new_start_node, new_end_node, new_car)) # planner takes request
     service_count = 0
     original_request_len = planner._request_queue.len()
