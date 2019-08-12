@@ -14,7 +14,7 @@ import scipy.integrate as integrate
 from primitives.load_primitives import get_prim_data
 import test_pedestrian, test_light, test_car
 dir_path = os.path.dirname(os.path.realpath(__file__))
-background_fig = dir_path + '/imglib/as/monitor.png'
+background_fig = dir_path + '/imglib/as/testmonitor.png'
 
 def get_background():
     return Image.open(background_fig)
@@ -73,30 +73,31 @@ def draw_monitor(last_state, current_state, exception, prim_id, person_spec, car
     if exception['vehicle']:
         color_car_spec[1] = 'red'
         car_fig = car_fig.resize((120,120))
-        background.paste(car_fig,(1200,550))
+        background.paste(car_fig,(500,1200))
     else:
-        background.paste(car_fig,(1080,520))
-    background.paste(person_fig,(132,550))
-    background.paste(light_fig,(580,450))
+        car_fig = car_fig.resize((700,200))
+        background.paste(car_fig,(500,1200))
+    background.paste(person_fig,(600,100))
+    background.paste(light_fig,(600,450))
     
     draw = ImageDraw.Draw(background)  
-    draw.text((140,300), '\u25CA arrive = destination;',fill=color_person_spec[0],font=font)
-    draw.text((140,330), '(\u00AC g) -> (\u00AC cross the street);',fill=color_person_spec[1],font=font)
-    draw.text((140,360), '(t_cross >= t_w) -> (\u00AC cross the street).',fill=color_person_spec[2],font=font)
-    draw.text((600,300), '\u25CB',fill=color_light_spec[0],font=largefont)
-    draw.text((645,310), 'r;',fill=color_light_spec[0],font=font)
-    draw.text((622,310), '30',fill=color_light_spec[0],font=smallfont)
-    draw.text((675,300), '\u25CB',fill=color_light_spec[1],font=largefont)
-    draw.text((720,310), 'g;',fill=color_light_spec[1],font=font)
-    draw.text((697,310), '25',fill=color_light_spec[1],font=smallfont)
-    draw.text((750,300), '\u25CB',fill=color_light_spec[2],font=largefont)
-    draw.text((792,310), 'y;',fill=color_light_spec[2],font=font)
-    draw.text((772,310), '5',fill=color_light_spec[2],font=smallfont)    
-    draw.text((602,344), '\u25A2',fill=color_light_spec[3],font=font1)
-    draw.text((617,345), '\u25CA rr.',fill=color_light_spec[3],font=font)
-    draw.text((1050,310), '\u25CA arrive = destination;',fill=color_car_spec[0],font=font)
-    draw.text((1050,344), '\u25A2',fill=color_car_spec[1],font=font1)
-    draw.text((1065,345), '\u00AC collision.',fill=color_car_spec[1],font=font)
+    draw.text((145,230), '\u25CA arrive = destination;',fill=color_person_spec[0],font=font)
+    draw.text((145,270), '(\u00AC g) -> (\u00AC cross the street);',fill=color_person_spec[1],font=font)
+    draw.text((145,310), '(t_cross >= t_w) -> \n(\u00AC cross the street).',fill=color_person_spec[2],font=font)  
+    draw.text((145,650), '\u25CB',fill=color_light_spec[0],font=largefont)
+    draw.text((190,660), 'r;',fill=color_light_spec[0],font=font)
+    draw.text((167,660), '30',fill=color_light_spec[0],font=smallfont)
+    draw.text((220,650), '\u25CB',fill=color_light_spec[1],font=largefont)
+    draw.text((265,660), 'g;',fill=color_light_spec[1],font=font)
+    draw.text((242,660), '25',fill=color_light_spec[1],font=smallfont)
+    draw.text((295,650), '\u25CB',fill=color_light_spec[2],font=largefont)
+    draw.text((337,660), 'y;',fill=color_light_spec[2],font=font)
+    draw.text((317,660), '5',fill=color_light_spec[2],font=smallfont)   
+    draw.text((145,700), '\u25A2',fill=color_light_spec[3],font=font1)
+    draw.text((160,700), '\u25CA rr.',fill=color_light_spec[3],font=font)
+    draw.text((145,1300), '\u25CA arrive = destination;',fill=color_car_spec[0],font=font)
+    draw.text((145,1330), '\u25A2',fill=color_car_spec[1],font=font1)
+    draw.text((160,1330), '\u00AC collision.',fill=color_car_spec[1],font=font)
     
     if prim_id != -1 and not exception['vehicle']:
         draw.text((1275,670), 'Guiding prim_id = ' +str(prim_id),fill=(0,100,0),font=middlefont)

@@ -39,7 +39,7 @@ if not options.show_axes:
     fig1 = plt.gca()
     fig1.axes.get_xaxis().set_visible(False)
     fig1.axes.get_yaxis().set_visible(False)
-ax2 = fig.add_axes([0.2,0.26,1,0.53]) # get rid of white border
+ax2 = fig.add_axes([0.23,0,1,1]) # get rid of white border
 fig2 = plt.gca()
 fig2.axes.get_xaxis().set_visible(False)
 fig2.axes.get_yaxis().set_visible(False)
