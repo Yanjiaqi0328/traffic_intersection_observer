@@ -252,7 +252,7 @@ def animate(frame_idx): # update animation by dt
     current_state = [horizontal_light[0], vertical_light[0], pedestrian_state, vehicle_state] 
     # updae monitor
     monitor.draw_monitor(last_state, current_state, exception, prim_id, pedestrian_spec, vehicle_spec, observer)
-    scheduler_monitor.draw_scheduler_table(cars_to_keep, [horizontal_light[0], vertical_light[0]], schedulerobserver)
+    scheduler_monitor.draw_scheduler_table(cars_to_keep, [horizontal_light[0], vertical_light[0]], schedulerobserver,vehicle_id,vehicle_state)
     last_state = current_state
     
     draw_cars(cars_to_keep, background)
