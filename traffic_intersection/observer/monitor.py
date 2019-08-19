@@ -154,6 +154,11 @@ def animate(frame_idx): # update animation by dt
     vertical_walk_time = get_remaining_walk_time(vertical_walk_safe, walk_sign_duration, traffic_lights.get_elapsed_time('vertical'))
     # update pedestrians
     monitor_pedestrian_state = 0
+    # person.monitor_state: 0- default
+    #                       1- not going to cross the street
+    #                       2- safe to get crossed
+    #                       3- walking sign is on but remaining time is not enough to get crossed
+    #                       4- walking sign is off
     if len(global_vars.pedestrians_to_keep) > 0:
         for person in global_vars.pedestrians_to_keep.copy():
             if True:
@@ -161,7 +166,7 @@ def animate(frame_idx): # update animation by dt
                 if person_xy not in (pedestrian_graph.lane1 + pedestrian_graph.lane2 + pedestrian_graph.lane3 + pedestrian_graph.lane4): # if pedestrian is not at any of the nodes then continue  
                     person.prim_next(dt)
                     global_vars.pedestrians_to_keep.add(person)
-                    person.monitor_state = 1
+                    person.monitor_state = 1 
                 elif person.continue_walking(pedestrian_graph.lane1, pedestrian_graph.lane2, (-pi/2, pi/2), vertical_walk_time): # if light is green cross the street, or if at a node and facing away from the street i.e. just crossed the street then continue
                     person.prim_next(dt)
                     global_vars.pedestrians_to_keep.add(person)
@@ -172,7 +177,7 @@ def animate(frame_idx): # update animation by dt
                 else:
                     person.state[3] = 0
                     if person.monitor_state != 3:
-                        person.monitor_state = 4
+                        person.monitor_state = 4 
                 
                  # pedestrians walk faster if not going fast enough to finish crossing the street before walk sign is off or 'false'
 #                if is_between(pedestrian_graph.lane1, person_xy) or is_between(pedestrian_graph.lane2, person_xy):
@@ -183,7 +188,7 @@ def animate(frame_idx): # update animation by dt
                     global_vars.pedestrians_to_keep.remove(person)
                 
                 if is_between(pedestrian_graph.lane1, person_xy) or is_between(pedestrian_graph.lane2, person_xy) or is_between(pedestrian_graph.lane3, person_xy) or is_between(pedestrian_graph.lane4, person_xy):
-                    person.monitor_state = 2
+                    person.monitor_state = 2 
                     
                 if person.id == options.pedestrian_to_pick:
                     all_components_monitor = all_components_monitor + [person]
