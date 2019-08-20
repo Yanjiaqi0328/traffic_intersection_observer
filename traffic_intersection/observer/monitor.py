@@ -13,6 +13,7 @@ import time, platform, warnings, matplotlib, random
 import components.scheduler as scheduler
 import observer.testpaste as monitor
 import observer.schedulerpaste as scheduler_monitor
+import prepare.user as user
 import datetime
 import threading
 if platform.system() == 'Darwin': # if the operating system is MacOS
@@ -28,22 +29,7 @@ else: # if the operating system is Linux or Windows
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 
-# set a new thread to read user's input
-class read_user_command(threading.Thread):
-    index = 0
-    #input_str=""
 
-    def __init__(self):
-        threading.Thread.__init__(self)
-        
-    def run(self):
-        while 1:
-            input_key = str(sys.stdin.readline()).strip("\n")
-            if input_key =='s':   # the user input 's' if he wants to choose/change the vehicle to monitor 
-                self.index = 1
-                print('You have requested to monitor a vehicle! ')
-user_command = read_user_command()
-user_command.start()
              
 # set randomness
 if not options.random_simulation:
@@ -89,16 +75,19 @@ def is_between(lane, person_xy):
 traffic_lights = traffic_signals.TrafficLights(yellow_max = 10, green_max = 50, random_start = True)
 # create planner
 planner = scheduler.Scheduler()
+# enable user's input
+user_command = user.Read_user_command()
+user_command.start()
+print('If you want to choose/change the vehicle to be monitored, please press "s". ')
 
 background = intersection.get_background()
 observer = monitor.get_background()
 schedulerobserver = scheduler_monitor.get_background()
 
+# default states (fsm)
 vehicle_id = 0
 pedestrian_id = 0
 last_state = [-1,-1,-1,-1]
-
-print('If you want to choose/change the vehicle to be monitored, please press "s". ')
 
 def animate(frame_idx): # update animation by dt
     global background, observer, vehicle_id, pedestrian_id, last_state, schedulerobserver
