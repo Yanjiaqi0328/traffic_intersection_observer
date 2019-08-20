@@ -38,7 +38,7 @@ def draw_monitor(last_state, current_state, exception, prim_id, person_spec, car
     fontpath1 = 'NotoSans-BoldItalic.ttf'
     fontpath = 'AbhayaLibre-SemiBold.ttf'
     font = ImageFont.truetype(fontpath, 28)
-    smallfont = ImageFont.truetype(fontpath, 18)
+    smallfont = ImageFont.truetype(fontpath, 23)
     middlefont = ImageFont.truetype(fontpath, 23)
     font1 = ImageFont.truetype(fontpath1, 25)
     largefont = ImageFont.truetype(fontpath1, 40)
@@ -75,10 +75,10 @@ def draw_monitor(last_state, current_state, exception, prim_id, person_spec, car
         car_fig = car_fig.resize((120,120))
         background.paste(car_fig,(500,1200))
     else:
-        car_fig = car_fig.resize((700,200))
+        #car_fig = car_fig.resize((700,200))
         background.paste(car_fig,(500,1200))
-    background.paste(person_fig,(600,100))
-    background.paste(light_fig,(600,450))
+    background.paste(person_fig,(650,80))
+    background.paste(light_fig,(650,435))
     
     draw = ImageDraw.Draw(background)  
     draw.text((145,230), '\u25CA arrive = destination;',fill=color_person_spec[0],font=font)

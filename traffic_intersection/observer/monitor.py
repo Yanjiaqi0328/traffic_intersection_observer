@@ -154,6 +154,7 @@ def animate(frame_idx): # update animation by dt
     vertical_walk_time = get_remaining_walk_time(vertical_walk_safe, walk_sign_duration, traffic_lights.get_elapsed_time('vertical'))
     # update pedestrians
     monitor_pedestrian_state = 0
+    picked_ped=[]
     if len(global_vars.pedestrians_to_keep) > 0:
         for person in global_vars.pedestrians_to_keep.copy():
             if True:
@@ -189,6 +190,7 @@ def animate(frame_idx): # update animation by dt
                     all_components_monitor = all_components_monitor + [person]
                     monitor_pedestrian_state = person.monitor_state
                     exception['pedestrian'] = person.is_dead
+                    picked_ped = person
                     if monitor_pedestrian_state in (2,3,4):
                         if person.state[2] in (-pi/2, pi/2):
                             v_cross = 1
@@ -221,13 +223,14 @@ def animate(frame_idx): # update animation by dt
     cars_to_keep = []
     update_cars(cars_to_keep, dt)
     vehicle_state = -1
-    
     find_car = False
+    picked_car = []
     for car in cars_to_keep:    
         if car.id == 0: #new car
             vehicle_id += 1
             car.id = vehicle_id
         if car.id == options.vehicle_to_pick:
+            picked_car = car
             find_car = True
             all_components_monitor = all_components_monitor + [car]
             if car.state[0] < 1:
@@ -248,11 +251,12 @@ def animate(frame_idx): # update animation by dt
 
     if find_car == False and vehicle_id >= options.vehicle_to_pick:
         options.vehicle_to_pick = vehicle_id + 10
+        #picked_car = car
     
     current_state = [horizontal_light[0], vertical_light[0], pedestrian_state, vehicle_state] 
-    # updae monitor
+    # update monitor
     monitor.draw_monitor(last_state, current_state, exception, prim_id, pedestrian_spec, vehicle_spec, observer)
-    scheduler_monitor.draw_scheduler_table(cars_to_keep, [horizontal_light[0], vertical_light[0]], schedulerobserver,vehicle_id,vehicle_state)
+    scheduler_monitor.draw_scheduler_table(cars_to_keep, [horizontal_light[0], vertical_light[0], vertical_walk_safe, horizontal_walk_safe], schedulerobserver,vehicle_state,picked_car,prim_id,picked_ped)
     last_state = current_state
     
     draw_cars(cars_to_keep, background)
