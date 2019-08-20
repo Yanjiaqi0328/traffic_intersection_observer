@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jul  1 15:38:04 2019
-@author: yanjiaqi
+Created in Jul 2019
+
+@author: Jiaqi Yan (jiaqi@caltech.edu)
 """
 
 import sys

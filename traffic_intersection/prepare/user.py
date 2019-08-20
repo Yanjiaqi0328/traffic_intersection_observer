@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Aug 2019
+Created in Aug 2019
 
-@author: Jiaqi Yan
+@author: Jiaqi Yan (jiaqi@caltech.edu)
 """
 
 import threading

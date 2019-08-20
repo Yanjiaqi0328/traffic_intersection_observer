@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on August 2019
+Created in August 2019
 
 @author: Josefine and Jiaqi
 """

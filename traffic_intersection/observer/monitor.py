@@ -1,11 +1,11 @@
-
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jun 11 15:27:33 2019
+Created in Jun 2019
 
-@author: yanjiaqi
+@author: Jiaqi Yan (jiaqi@caltech.edu)
 """
+
 import sys
 sys.path.append('..') # enable importing modules from an upper directory:
 from prepare.helper import *
@@ -221,7 +221,9 @@ def animate(frame_idx): # update animation by dt
                         #print('arrived')
                         pedestrian_spec = 1
                         
-                            
+    # pedestrian_state(for fsm): -1- not appear
+    #                             0- wait
+    #                             1- walk                          
     if monitor_pedestrian_state == 0:
         pedestrian_state = -1
     elif monitor_pedestrian_state in (1,2):
