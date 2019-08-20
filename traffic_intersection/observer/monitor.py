@@ -14,6 +14,7 @@ import components.scheduler as scheduler
 import observer.testpaste as monitor
 import observer.schedulerpaste as scheduler_monitor
 import datetime
+import threading
 if platform.system() == 'Darwin': # if the operating system is MacOS
 #    matplotlib.use('macosx')
     matplotlib.use('Qt5Agg')
@@ -27,6 +28,23 @@ else: # if the operating system is Linux or Windows
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 
+# set a new thread to read user's input
+class read_user_command(threading.Thread):
+    index = 0
+    #input_str=""
+
+    def __init__(self):
+        threading.Thread.__init__(self)
+        
+    def run(self):
+        while 1:
+            input_key = str(sys.stdin.readline()).strip("\n")
+            if input_key =='s':   # the user input 's' if he wants to choose/change the vehicle to monitor 
+                self.index = 1
+                print('You have requested to monitor a vehicle! ')
+user_command = read_user_command()
+user_command.start()
+             
 # set randomness
 if not options.random_simulation:
     random.seed(options.random_seed)
@@ -80,12 +98,18 @@ vehicle_id = 0
 pedestrian_id = 0
 last_state = [-1,-1,-1,-1]
 
+print('If you want to choose/change the vehicle to be monitored, please press "s". ')
+
 def animate(frame_idx): # update animation by dt
     global background, observer, vehicle_id, pedestrian_id, last_state, schedulerobserver
     h_cross = 0
     v_cross = 0
     
-    # for monitor visualization
+    # if the user has requested to choose a vehicle, then ask for the vehicle id (default to be 1)
+    if user_command.index == 1:
+        options.vehicle_to_pick = int(input('Please input the ID of vehicle to be monitored: '))
+    user_command.index = 0
+
     pedestrian_spec = 0
     light_spec = 0
     vehicle_spec = 0
@@ -257,7 +281,7 @@ def animate(frame_idx): # update animation by dt
     current_state = [horizontal_light[0], vertical_light[0], pedestrian_state, vehicle_state] 
     # updae monitor
     monitor.draw_monitor(last_state, current_state, exception, prim_id, pedestrian_spec, vehicle_spec, observer)
-    scheduler_monitor.draw_scheduler_table(cars_to_keep, [horizontal_light[0], vertical_light[0]], schedulerobserver,vehicle_id,vehicle_state)
+    scheduler_monitor.draw_scheduler_table(cars_to_keep, [horizontal_light[0], vertical_light[0]], schedulerobserver, options.vehicle_to_pick, vehicle_state)
     last_state = current_state
     
     draw_cars(cars_to_keep, background)
