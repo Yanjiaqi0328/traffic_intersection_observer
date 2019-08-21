@@ -32,6 +32,16 @@ class Scheduler:
         self._waiting_dict = dict()
         self._effective_times = dict()
 
+    def length(self): # add function to check the length of the request queue
+        self.len = queue.Queue.len
+
+    def check_car_request(the_car):
+        check == False
+        for car in self._request_queue:
+            if car.id == the_car.id:
+                check == True
+        return check
+
     def make_transit(self, node):
         return (0, node[1], node[2], node[3])
 
