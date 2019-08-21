@@ -73,10 +73,10 @@ def draw_monitor(last_state, current_state, exception, prim_id, person_spec, car
     if exception['vehicle']:
         color_car_spec[1] = 'red'
         car_fig = car_fig.resize((120,120))
-        background.paste(car_fig,(500,1200))
+        background.paste(car_fig,(500,1150))
     else:
-        car_fig = car_fig.resize((740,220))
-        background.paste(car_fig,(500,1200))
+        car_fig = car_fig.resize((830,200))
+        background.paste(car_fig,(500,1150))
     background.paste(person_fig,(650,80))
     background.paste(light_fig,(650,435))
     
@@ -99,12 +99,12 @@ def draw_monitor(last_state, current_state, exception, prim_id, person_spec, car
     draw.text((145,1330), '\u25A2',fill=color_car_spec[1],font=font1)
     draw.text((160,1330), '\u00AC collision.',fill=color_car_spec[1],font=font)
     
-    if prim_id != -1 and not exception['vehicle']:
-        draw.text((1275,670), 'Guiding prim_id = ' +str(prim_id),fill=(0,100,0),font=middlefont)
-        draw.text((1275,700), str(x0) + '->'+ str(xf),fill=(0,100,0),font=middlefont)
+#    if prim_id != -1 and not exception['vehicle']:
+#        draw.text((1275,670), 'Guiding prim_id = ' +str(prim_id),fill=(0,100,0),font=middlefont)
+#        draw.text((1275,700), str(x0) + '->'+ str(xf),fill=(0,100,0),font=middlefont)
     
    
 #background = get_background()
-#exception = {'pedestrian': True, 'vehicle': True}
-#draw_monitor(['r', 'r', 1, 1],['r', 'g', 1, 0], exception, 99, -1, 2, background)
+#exception = {'pedestrian': True, 'vehicle': False}
+#draw_monitor(['r', 'r', 1, 1],['r', 'g', 1, 0], exception, 99, 1, 2, background)
 #background.show()

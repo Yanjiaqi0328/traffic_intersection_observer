@@ -3,7 +3,7 @@
 """
 Created in Jul 2019
 
-@author: Jiaqi Yan (jiaqi@caltech.edu)
+@author: Jiaqi Yan and Josefine Graebener
 """
 
 import sys
@@ -26,7 +26,7 @@ def fsm_vehicles(last_vehicle_state, current_vehicle_state, expection=False):
         c.attr('node', shape='doublecircle', width='0.2', fontsize ='15.0')
         c.node('x',style='filled', color='red')
     else:
-        c.attr('node', shape='circle', width='0.2', fontsize ='20.0')
+        c.attr('node', shape='circle', width='0.1', fontsize ='30.0')
         c.node('0', label='Approach')
         c.node('1', label='Stop') # stop at the signal
         c.node('2', label='Signal') # adding teststate
@@ -38,7 +38,7 @@ def fsm_vehicles(last_vehicle_state, current_vehicle_state, expection=False):
             c.node(str(current_vehicle_state), style='filled', color=fillcolor)
             if last_vehicle_state in (0,1):
                 edgecolor[str(last_vehicle_state)+str(current_vehicle_state)] = fillcolor 
-        c.attr('edge', arrowsize = '1', fontsize ='10.0')
+        c.attr('edge', arrowsize = '1', fontsize ='20.0')
         c.edge('0', '1', label='"!clear"', fontcolor = edgecolor['01'], color = edgecolor['01']) 
         c.edge('1', '0', label='"clear"', fontcolor = edgecolor['10'], color = edgecolor['10'])
         c.edge('0', '2', label='"clear"', fontcolor = edgecolor['00'], color = edgecolor['00'])
