@@ -77,6 +77,7 @@ traffic_lights = traffic_signals.TrafficLights(yellow_max = 10, green_max = 50, 
 planner = scheduler.Scheduler()
 # enable user's input
 user_command = user.Read_user_command()
+user_command.daemon = True # the simulation stops once the main thread completes.
 user_command.start()
 print('If you want to choose/change the vehicle to be monitored, please press "s". ')
 
