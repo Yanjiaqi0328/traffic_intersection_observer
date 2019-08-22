@@ -14,6 +14,7 @@ import components.scheduler as scheduler
 import observer.testpaste as monitor
 import observer.schedulerpaste as scheduler_monitor
 import datetime
+from numpy import cos, sin, pi
 if platform.system() == 'Darwin': # if the operating system is MacOS
 #    matplotlib.use('macosx')
     matplotlib.use('Qt5Agg')
