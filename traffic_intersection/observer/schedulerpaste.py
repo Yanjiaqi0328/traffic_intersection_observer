@@ -74,6 +74,7 @@ def draw_scheduler_table(cars_to_keep, light_color, background,vehicle_state,pic
     # state CAR ID
     if picked_car:
         draw.text((270,470), str(picked_car.id),fill='black',font=font)
+        draw.text((1000,550), 'len(request_queue)',fill='green',font=font)
     if picked_car:
         car_xy = (picked_car.state[2],picked_car.state[3])
         waiting_signal = False
@@ -90,6 +91,10 @@ def draw_scheduler_table(cars_to_keep, light_color, background,vehicle_state,pic
             if not picked_car.alive_time < 1:
                 draw.text((970,710), '!reject',fill='red',font=font)
                 draw.text((380,630), '?reject',fill='red',font=font)
+                draw.text((530,630), '?accept',fill='black',font=font) 
+                draw.text((700,630), '?primitives',fill='black',font=font)  
+                draw.text((1120,710), '!accept',fill='black',font=font)
+                draw.text((1280,710), '!primitives',fill='black',font=font) 
             if at_waiting_line(car_xy, 'horizontal'):
                 if light_color[0] == 'r':
                     draw.text((440,790),'Red light',fill= 'red',font=font)
@@ -129,7 +134,7 @@ def draw_scheduler_table(cars_to_keep, light_color, background,vehicle_state,pic
         draw.text((380,630), '?reject',fill='black',font=font)
         draw.text((530,630), '?accept',fill='black',font=font)
         draw.text((700,630), '?primitives',fill='black',font=font)
-        draw.text((1000,550), 'len(request_queue)',fill='black',font=font)
+        #draw.text((1000,550), 'len(request_queue)',fill='black',font=font)
         draw.text((1000,630), '?request',fill='black',font=font)
         draw.text((970,710), '!reject',fill='black',font=font)
         draw.text((1120,710), '!accept',fill='black',font=font)
@@ -141,28 +146,34 @@ def draw_scheduler_table(cars_to_keep, light_color, background,vehicle_state,pic
         #if person_xy in (pedestrian_graph.lane1 + pedestrian_graph.lane2) and light_color[0] == 'g':#+ pedestrian_graph.lane3 + pedestrian_graph.lane4):
         #    draw.text((380,1140), '?h_walk',fill='green',font=font)
         if picked_ped.monitor_state in (2,3,4):
+            draw.text((380,1140), '?h_walk',fill='black',font=font)
+            draw.text((800,1220), '!h_walk',fill='black',font=font)
+            draw.text((560,1140), '?v_walk',fill='black',font=font)
+            draw.text((1170,1220), '!v_walk',fill='black',font=font)
+            draw.text((440,1060), 't_cross',fill='black',font=font)
+            draw.text((850,1060), 'h_timer',fill='black',font=font)
             if picked_ped.state[2] in (-pi/2, pi/2) and light_color[2]: # walking S-N left side
                 draw.text((560,1140), '?v_walk',fill='green',font=font)
                 draw.text((1170,1220), '!v_walk',fill='green',font=font)
                 draw.text((440,1060), 't_cross',fill='green',font=font)
                 draw.text((1200,1060), 'v_timer',fill='green',font=font)
                 draw.text((440,1300), 'Crossing vertically',fill='green',font=font)
-            else:
-                draw.text((560,1140), '?v_walk',fill='black',font=font)
-                draw.text((1170,1220), '!v_walk',fill='black',font=font)
-                draw.text((440,1060), 't_cross',fill='black',font=font)
-                draw.text((1200,1060), 'v_timer',fill='black',font=font)
+            # else:
+            #     draw.text((560,1140), '?v_walk',fill='black',font=font)
+            #     draw.text((1170,1220), '!v_walk',fill='black',font=font)
+            #     draw.text((440,1060), 't_cross',fill='black',font=font)
+            #     draw.text((1200,1060), 'v_timer',fill='black',font=font)
             if picked_ped.state[2] in (pi, 0) and light_color[3]: # walking E-W
                 draw.text((380,1140), '?h_walk',fill='green',font=font)
                 draw.text((800,1220), '!h_walk',fill='green',font=font)
                 draw.text((440,1060), 't_cross',fill='green',font=font)
                 draw.text((850,1060), 'h_timer',fill='green',font=font)
                 draw.text((440,1300), 'Crossing horizontally',fill='green',font=font)
-            else:
-                draw.text((380,1140), '?h_walk',fill='black',font=font)
-                draw.text((800,1220), '!h_walk',fill='black',font=font)
-                draw.text((440,1060), 't_cross',fill='black',font=font)
-                draw.text((850,1060), 'h_timer',fill='black',font=font)
+            # else:
+            #     draw.text((380,1140), '?h_walk',fill='black',font=font)
+            #     draw.text((800,1220), '!h_walk',fill='black',font=font)
+            #     draw.text((440,1060), 't_cross',fill='black',font=font)
+            #     draw.text((850,1060), 'h_timer',fill='black',font=font)
             if picked_ped.monitor_state == 4:
                 draw.text((440,1300), 'Waiting at the signal',fill='red',font=font)   
             if picked_ped.monitor_state == 3:
