@@ -53,6 +53,7 @@ def fsm_vehicles(last_vehicle_state, current_vehicle_state, expection=False):
         c.edge('3','5', label='"clear"', fontcolor = edgecolor['35'], color = edgecolor['35'])
         c.edge('6','6', label='"!clear"', fontcolor = edgecolor['66'], color = edgecolor['66'])
         c.edge('6','5', label='"clear"', fontcolor = edgecolor['65'], color = edgecolor['65'])
+        # for reshaping the FSM, not real transitions
         c.edge('5','0', label='', fontcolor = 'white', color = 'white')
         c.edge('1','6', label='', fontcolor = 'white', color = 'white')
         c.edge('2','4', label='', fontcolor = 'white', color = 'white') 
