@@ -16,6 +16,7 @@ import observer.schedulerpaste as scheduler_monitor
 import prepare.user as user
 import datetime
 import threading
+from numpy import cos, sin, pi
 if platform.system() == 'Darwin': # if the operating system is MacOS
 #    matplotlib.use('macosx')
     matplotlib.use('Qt5Agg')
@@ -246,7 +247,16 @@ def animate(frame_idx): # update animation by dt
     vehicle_state = -1
     find_car = False
     picked_car = []
-    for car in cars_to_keep:    
+    
+    if last_state[3] in (2,3,4):
+        seen_signal = True
+    else:
+        seen_signal = False
+
+
+    for car in cars_to_keep:  
+        #if car.alive_time < 10:
+            #seen_signal = False  
         if car.id == 0: #new car
             vehicle_id += 1
             car.id = vehicle_id
@@ -254,11 +264,99 @@ def animate(frame_idx): # update animation by dt
             picked_car = car
             find_car = True
             all_components_monitor = all_components_monitor + [car]
+            car_xy = (car.state[2],car.state[3])
             if car.state[0] < 1:
-                vehicle_state = 0
+                #vehicle_state = 0
                 vehicle_spec = 2
+                # check location of car to determine which state it is in
+                # check heading to determine if approaching or leaving when not on the intersection
+                if 345 < car.state[2] < 725 and 155 < car.state[3] < 590:
+                    vehicle_state = 4
+                elif car.state[2] < 345:
+                    if car.state[1] == pi:
+                        vehicle_state = 6
+                    else:
+                        if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
+                            vehicle_state = 2
+                        elif seen_signal:
+                            vehicle_state = 4
+                        else:
+                            vehicle_state = 1
+                elif car.state[2] > 725:
+                    if car.state[1] == 0:
+                        vehicle_state = 6
+                    else:
+                        if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
+                            vehicle_state = 2
+                        elif seen_signal:
+                            vehicle_state = 4
+                        else:
+                            vehicle_state = 1   
+                elif car.state[3] < 155:
+                    if car.state[1] == -pi/2:
+                        vehicle_state = 6
+                    else:
+                        if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
+                            vehicle_state = 2
+                        elif seen_signal:
+                            vehicle_state = 4
+                        else:
+                            vehicle_state = 1
+                elif car.state[3] > 590:
+                    if car.state[1] == pi/2:
+                        vehicle_state = 6
+                    else:
+                        if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
+                            vehicle_state = 2
+                        elif seen_signal:
+                            vehicle_state = 4
+                        else:
+                            vehicle_state = 1
             else:
-                vehicle_state = 1
+                if 345 < car.state[2] < 725 and 155 < car.state[3] < 590:
+                    vehicle_state = 3 # on intersection
+                elif car.state[2] < 345:
+                    if car.state[1] == pi:
+                        vehicle_state = 5 # leaving
+                    else:
+                        if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
+                            vehicle_state = 2 # at signal
+                        elif seen_signal:
+                            vehicle_state = 3
+                        else:
+                            vehicle_state = 0 # approaching
+                elif car.state[2] > 725:
+                    if car.state[1] == 0:
+                        vehicle_state = 5
+                    else:
+                        if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
+                            vehicle_state = 2
+                        elif seen_signal:
+                            vehicle_state = 3
+                        else:
+                            vehicle_state = 0   # approaching
+                elif car.state[3] < 155:
+                    if car.state[1] == -pi/2:
+                        vehicle_state = 5
+                    else:
+                        if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
+                            vehicle_state = 2
+                        elif seen_signal:
+                            vehicle_state = 3
+                        else:
+                            vehicle_state = 0
+                elif car.state[3] > 590:
+                    if car.state[1] == pi/2:
+                        vehicle_state = 5
+                    else:
+                        if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
+                            vehicle_state = 2
+                        elif seen_signal:
+                            vehicle_state = 3
+                        else:
+                            vehicle_state = 0
+                
+                #vehicle_state = 1
                 if car.extract_primitive()== False:
                     #print('finish')
                     vehicle_spec = 1
@@ -272,6 +370,7 @@ def animate(frame_idx): # update animation by dt
 
     if find_car == False and vehicle_id >= options.vehicle_to_pick:
         options.vehicle_to_pick = vehicle_id + 10
+        #seen_signal = False
         #picked_car = car
     
     current_state = [horizontal_light[0], vertical_light[0], pedestrian_state, vehicle_state] 
