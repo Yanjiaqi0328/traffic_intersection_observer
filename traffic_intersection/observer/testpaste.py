@@ -75,8 +75,8 @@ def draw_monitor(last_state, current_state, exception, prim_id, person_spec, car
         car_fig = car_fig.resize((120,120))
         background.paste(car_fig,(500,1200))
     else:
-        car_fig = car_fig.resize((740,220))
-        background.paste(car_fig,(500,1200))
+        #car_fig = car_fig.resize((740,220))
+        background.paste(car_fig,(410,1100))
     background.paste(person_fig,(650,80))
     background.paste(light_fig,(650,435))
     
