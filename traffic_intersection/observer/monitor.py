@@ -256,7 +256,7 @@ def animate(frame_idx): # update animation by dt
                 if 345 < car.state[2] < 725 and 155 < car.state[3] < 590:
                     vehicle_state = 4
                 elif car.state[2] < 345:
-                    if been_on_intersection and seen_signal:#seen_signal:#car.state[1] == pi:
+                    if been_on_intersection and seen_signal:#car.state[1] == pi:
                         vehicle_state = 6
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
