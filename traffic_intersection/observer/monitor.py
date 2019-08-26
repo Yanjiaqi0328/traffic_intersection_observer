@@ -253,6 +253,15 @@ def animate(frame_idx): # update animation by dt
     else:
         seen_signal = False
 
+    if last_state[3] == 2:
+        last_signal = True
+    else:
+        last_signal = False
+
+    if last_state[3] in (3,4,5,6):
+        been_on_intersection = True
+    else:
+        been_on_intersection = False
 
     for car in cars_to_keep:  
         #if car.alive_time < 10:
@@ -273,86 +282,86 @@ def animate(frame_idx): # update animation by dt
                 if 345 < car.state[2] < 725 and 155 < car.state[3] < 590:
                     vehicle_state = 4
                 elif car.state[2] < 345:
-                    if car.state[1] == pi:
+                    if been_on_intersection:#car.state[1] == pi:
                         vehicle_state = 6
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 4
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 1
                 elif car.state[2] > 725:
-                    if car.state[1] == 0:
+                    if been_on_intersection:#car.state[1] == 0:
                         vehicle_state = 6
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 4
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 1   
                 elif car.state[3] < 155:
-                    if car.state[1] == -pi/2:
+                    if been_on_intersection:#car.state[1] == -pi/2:
                         vehicle_state = 6
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 4
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 1
                 elif car.state[3] > 590:
-                    if car.state[1] == pi/2:
+                    if been_on_intersection:# car.state[1] == pi/2:
                         vehicle_state = 6
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 4
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 1
             else:
                 if 345 < car.state[2] < 725 and 155 < car.state[3] < 590:
                     vehicle_state = 3 # on intersection
                 elif car.state[2] < 345:
-                    if car.state[1] == pi:
+                    if been_on_intersection:# car.state[1] == pi:
                         vehicle_state = 5 # leaving
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
                             vehicle_state = 2 # at signal
-                        elif seen_signal:
-                            vehicle_state = 3
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 0 # approaching
                 elif car.state[2] > 725:
-                    if car.state[1] == 0:
+                    if been_on_intersection:#car.state[1] == 0:
                         vehicle_state = 5
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 3
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 0   # approaching
                 elif car.state[3] < 155:
-                    if car.state[1] == -pi/2:
+                    if been_on_intersection:# car.state[1] == -pi/2:
                         vehicle_state = 5
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 3
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 0
                 elif car.state[3] > 590:
-                    if car.state[1] == pi/2:
+                    if been_on_intersection:#car.state[1] == pi/2:
                         vehicle_state = 5
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 3
+                        elif last_signal:# and not been_on_intersection:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 0
                 
@@ -434,6 +443,6 @@ if options.save_video:
     #Writer = animation.writers['ffmpeg']
     writer = animation.FFMpegWriter(fps = options.speed_up_factor*int(1/options.dt), metadata=dict(artist='Traffic Intersection Simulator'), bitrate=-1)
     now = str(datetime.datetime.now())
-    ani.save('../movies/monitor' + now + '.avi', dpi=600, writer=writer)
+    ani.save('../movies/monitor' + now + '.mp4', dpi=600, writer=writer)
 plt.show()
 
