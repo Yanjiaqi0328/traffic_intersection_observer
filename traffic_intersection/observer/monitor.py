@@ -232,6 +232,11 @@ def animate(frame_idx): # update animation by dt
     else:
         seen_signal = False
 
+    if last_state[3] == 2:
+        last_signal = True
+    else:
+        last_signal = False
+
     if last_state[3] in (3,4,5,6):
         been_on_intersection = True
     else:
@@ -256,86 +261,86 @@ def animate(frame_idx): # update animation by dt
                 if 345 < car.state[2] < 725 and 155 < car.state[3] < 590:
                     vehicle_state = 4
                 elif car.state[2] < 345:
-                    if been_on_intersection and seen_signal:#car.state[1] == pi:
+                    if been_on_intersection:#car.state[1] == pi:
                         vehicle_state = 6
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 4
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 1
                 elif car.state[2] > 725:
-                    if been_on_intersection and seen_signal:#seen_signal:#car.state[1] == 0:
+                    if been_on_intersection:#car.state[1] == 0:
                         vehicle_state = 6
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 4
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 1   
                 elif car.state[3] < 155:
-                    if been_on_intersection and seen_signal:#seen_signal:#car.state[1] == -pi/2:
+                    if been_on_intersection:#car.state[1] == -pi/2:
                         vehicle_state = 6
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 4
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 1
                 elif car.state[3] > 590:
-                    if been_on_intersection and seen_signal:#een_signal:#car.state[1] == pi/2:
+                    if been_on_intersection:# car.state[1] == pi/2:
                         vehicle_state = 6
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 4
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 1
             else:
                 if 345 < car.state[2] < 725 and 155 < car.state[3] < 590:
                     vehicle_state = 3 # on intersection
                 elif car.state[2] < 345:
-                    if been_on_intersection and seen_signal:#car.state[1] == pi:
+                    if been_on_intersection:# car.state[1] == pi:
                         vehicle_state = 5 # leaving
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
                             vehicle_state = 2 # at signal
-                        elif seen_signal:
-                            vehicle_state = 3
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 0 # approaching
                 elif car.state[2] > 725:
-                    if been_on_intersection and seen_signal:#car.state[1] == 0:
+                    if been_on_intersection:#car.state[1] == 0:
                         vehicle_state = 5
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'horizontal'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 3
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 0   # approaching
                 elif car.state[3] < 155:
-                    if been_on_intersection and seen_signal:#car.state[1] == -pi/2:
+                    if been_on_intersection:# car.state[1] == -pi/2:
                         vehicle_state = 5
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 3
+                        elif last_signal:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 0
                 elif car.state[3] > 590:
-                    if been_on_intersection and seen_signal:#car.state[1] == pi/2:
+                    if been_on_intersection:#car.state[1] == pi/2:
                         vehicle_state = 5
                     else:
                         if scheduler_monitor.at_waiting_line(car_xy, 'vertical'):
                             vehicle_state = 2
-                        elif seen_signal:
-                            vehicle_state = 3
+                        elif last_signal:# and not been_on_intersection:
+                            vehicle_state = 2
                         else:
                             vehicle_state = 0
                 
